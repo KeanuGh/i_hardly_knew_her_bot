@@ -2,7 +2,6 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, request
 from pymessenger.bot import Bot
-import hyphenate
 
 # load env
 load_dotenv()
@@ -57,8 +56,7 @@ def good_word(text: str):
     words = text.split()
     for word in words:
         if word[-1].lower == 'a' or word[-2:].lower() in ('er', 'or', 'ar') or word[-3:].lower in ('eur', 'ure'):
-            if len(hyphenate.hyphenate_word(word)) > 0:
-                return word.lower()
+            return word.lower()
     return None
 
 
