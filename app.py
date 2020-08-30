@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, request
 from pymessenger.bot import Bot
+import hyphenate
 
 # load env
 load_dotenv()
@@ -51,16 +52,13 @@ def is_user_message(message):
             not message['message'].get("is_echo"))
 
 
-# if message contains a funny word, return that word. otherwise return None
+# if message contains a funny word, return that word if it has more than one syllable. otherwise return None
 def good_word(text: str):
     words = text.split()
     for word in words:
-        if word[-1].lower == 'a':
-            return word.lower()
-        elif word[-2:].lower() in ('er', 'or', 'ar'):
-            return word.lower()
-        elif word[-3:].lower in ('eur', 'ure'):
-            return word.lower()
+        if word[-1].lower == 'a' or word[-2:].lower() in ('er', 'or', 'ar') or word[-3:].lower in ('eur', 'ure'):
+            if len(hyphenate.hyphenate_word(word)) > 0:
+                return word.lower()
     return None
 
 
